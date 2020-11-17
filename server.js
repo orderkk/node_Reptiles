@@ -33,14 +33,24 @@ https.get('https://movie.douban.com/top250', function (res) {
         console.log('===========================')
         // console.log(allFilms)
 
+        // fs.stat('./film.json', (err, stat) => {
+        //     if (err) {
+        //         fs.writeFile('./film.json', JSON.stringify(allFilms), (err) => {
+        //             if (err)
+        //                 console.log(err)
+        //             console.log('ok!')
+        //         })
+
+        //         // 图片下载
+        //         downloadImage(allFilms);
+        //     }
+        // })
+
         fs.writeFile('./film.json', JSON.stringify(allFilms), (err) => {
             if (err)
                 console.log(err)
             console.log('ok!')
         })
-
-        // 图片下载
-        // downloadImage(allFilms);
 
     })
 })
@@ -51,7 +61,7 @@ function downloadImage(allFilms) {
         const picUrl = allFilms[i].pic;
         // console.log(picUrl)
         https.get(picUrl, (res) => {
-            // console.log(res)
+            console.log(res)
             res.setEncoding('binary');
 
             let str = ''
@@ -59,12 +69,11 @@ function downloadImage(allFilms) {
                 str += chunk
             })
             res.on('end', () => {
-                console.log(str)
                 fs.writeFile(`./images/${i}.png`, str, 'binary', (err) => {
                     if (err) {
                         console.log('图片下载失败')
                     }
-                    console.log(`第${i+1}张图片下载完成`)
+                    console.log(`第${i + 1}张图片下载完成`)
                 })
             })
         })
